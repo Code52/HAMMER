@@ -1,7 +1,11 @@
 bearded-octo-nemesis
 ====================
 
-So we were discussing this earlier:
+So we started with this little conundrum when restyling Win8 XAML apps:
+
+http://stackoverflow.com/questions/10292166/can-i-change-rebind-the-default-winrt-system-brushes-palette-colors-to-match-m
+
+Which lead to this discussion:
 
 **6:23:48 PM  Paul Jenkins**
 
