@@ -9,7 +9,7 @@ namespace Restylerator
     class Program
     {
         //Need to check for CPU-bits
-        const string File = @"C:\Program Files (x86)\Windows Kits\8.0\Include\winrt\xaml\design\generic.xaml";
+        private static string File = @"C:\Program Files (x86)\Windows Kits\8.0\Include\winrt\xaml\design\generic.xaml";
 
         private static readonly List<string> Brushes = new List<string>
                           {
@@ -40,6 +40,7 @@ namespace Restylerator
 
         static void Main(string[] args)
         {
+            File = @"generic.xaml";
             XNamespace namespace1 = "http://schemas.microsoft.com/winfx/2006/xaml/presentation";
             XNamespace namespace2 = "http://schemas.microsoft.com/winfx/2006/xaml";
             XDocument doc = XDocument.Load(File);
