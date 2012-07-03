@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HAMMER.Touch", "HAMMER.Touch.csproj", "{FF1420E2-E0BB-45F2-922B-D2912CE10418}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FF1420E2-E0BB-45F2-922B-D2912CE10418}.Debug|x86.ActiveCfg = Debug|x86
+		{FF1420E2-E0BB-45F2-922B-D2912CE10418}.Debug|x86.Build.0 = Debug|x86
+		{FF1420E2-E0BB-45F2-922B-D2912CE10418}.Release|x86.ActiveCfg = Release|x86
+		{FF1420E2-E0BB-45F2-922B-D2912CE10418}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
