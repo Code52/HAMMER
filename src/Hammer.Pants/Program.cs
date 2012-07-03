@@ -5,7 +5,7 @@ using System.Text;
 using System.Xml.Linq;
 using MadProps.AppArgs;
 
-namespace Restylerator
+namespace Hammer.Pants
 {
     class Program
     {
@@ -69,10 +69,10 @@ namespace Restylerator
         static void Main(string[] args)
         {
             HSLColor baseColour;
-            RestyleratorArgs appargs;
+            PantsArgs appargs;
             try
             {
-                appargs = args.As<RestyleratorArgs>();
+                appargs = args.As<PantsArgs>();
                 if (!string.IsNullOrEmpty(appargs.InputFile))
                     File = appargs.InputFile;
 
@@ -83,7 +83,7 @@ namespace Restylerator
             {
                 Console.WriteLine(ex.Message);
                 Console.WriteLine();
-                Console.WriteLine(AppArgs.HelpFor<RestyleratorArgs>());
+                Console.WriteLine(AppArgs.HelpFor<PantsArgs>());
 
                 return;
             }

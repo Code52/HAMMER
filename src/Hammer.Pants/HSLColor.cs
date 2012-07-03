@@ -1,7 +1,7 @@
 using System;
 using System.Drawing;
 
-namespace Restylerator
+namespace Hammer.Pants
 {
     //Source: http://richnewman.wordpress.com/about/code-listings-and-diagrams/hslcolor-class/
     public class HSLColor

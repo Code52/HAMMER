@@ -8,8 +8,8 @@
     <ProjectGuid>{1B5A2D4B-0B5B-48C6-B8EE-DF31908B96F9}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Restylerator</RootNamespace>
-    <AssemblyName>Restylerator</AssemblyName>
+    <RootNamespace>Hammer.Pants</RootNamespace>
+    <AssemblyName>Hammer.Pants</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -49,9 +49,9 @@
   <ItemGroup>
     <Compile Include="HSLColor.cs" />
     <Compile Include="MadProps\AppArgs.cs" />
+    <Compile Include="PantsArgs.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RestyleratorArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\SampleData\generic.xaml">

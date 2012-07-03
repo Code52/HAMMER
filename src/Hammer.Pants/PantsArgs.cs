@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Restylerator
+namespace Hammer.Pants
 {
-    public class RestyleratorArgs
+    public class PantsArgs
     {
         [Required]
         public string Colour { get; set; }
