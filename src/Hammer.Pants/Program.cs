@@ -5,7 +5,7 @@ using System.Text;
 using System.Xml.Linq;
 using MadProps.AppArgs;
 
-namespace Hammer.Pants
+namespace HAMMER.Pants
 {
     class Program
     {

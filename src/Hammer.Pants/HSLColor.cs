@@ -1,7 +1,7 @@
 using System;
 using System.Drawing;
 
-namespace Hammer.Pants
+namespace HAMMER.Pants
 {
     //Source: http://richnewman.wordpress.com/about/code-listings-and-diagrams/hslcolor-class/
     public class HSLColor

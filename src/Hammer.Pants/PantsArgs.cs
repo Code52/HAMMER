@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Hammer.Pants
+namespace HAMMER.Pants
 {
     public class PantsArgs
     {

@@ -1,5 +1,8 @@
-bearded-octo-nemesis
+Hyper-Awesome, Malicious, Markup Enabled Reality.
 ====================
+
+HAMMER.Pants
+------------
 
 So we started with this little conundrum when restyling Win8 XAML apps:
 
