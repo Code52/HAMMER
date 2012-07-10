@@ -4,36 +4,26 @@ Hyper-Awesome, Malicious, Markup Enabled Reality.
 HAMMER.Pants
 ------------
 
-So we started with this little conundrum when restyling Win8 XAML apps:
+So we started with [this](http://stackoverflow.com/questions/10292166/can-i-change-rebind-the-default-winrt-system-brushes-palette-colors-to-match-m) little conundrum when restyling Win8 XAML apps: 
 
-http://stackoverflow.com/questions/10292166/can-i-change-rebind-the-default-winrt-system-brushes-palette-colors-to-match-m
+ > To brand WinRT/XAML apps, you need to override ALL control styles. This sucks if you just want to change the colours to match your theme.
 
-Which lead to this discussion:
+HAMMER.Pants solves this, by auto-modifying all the coloured brushes so you don't have to pick through them. Currently, you provide a "base" colour, and HAMMER.Pants modifies that based on the luminance variation found in the original styles. That is, if you pick red, all the purples will be replaced with reds, but they'll change in brightness slightly just like the default purples do.
 
-**6:23:48 PM  Paul Jenkins**
+**Usage**
+	
+	HAMMER.Pants.exe /colour=value [/inputfile=value] [/outputfile=value]
+	
+	 /colour hex (without #) value for the "base" 
+	 /inputfile (optional if on Windows 8)
+	 /outputfile (optioanl, will default to generic.xaml in the Hammer.Pants directory)
 
-What I'm thinking - and its likely I/you will write more apps in the future - is that we could write an app that finds those files, you give it a bunch of colours for the "Accent", then it replaces where required and outputs a new generic.xaml And perhaps an option to choose what controls you want to include a more minimal set of XAML resources is always easier to work with  
+**TODO**
 
-The default palette is various shades of grey, black, white, and various shades of purple. Thats one of the big problems, its not just a single brush to replace, but about 30. What we could do is have two modes: * select a single base colour, and it adjusts up/down for each brush * get user to provide all the "Accent" values  
+* Provide a wider colour pallete rather than auto-generated HSB values
+* Project-build script so that it's done at build time, no external app required.
 
-http://i.imgur.com/hlUGt.png example of the different names for very slightly different shades 
 
-**6:27:03 PM  Brendan Forster**
-
-ok, so i'm thinking from a consumer side - an ideal thing for me would be to have a "config" file in the csproj where i pick out the simple/medium config. i then build the solution to get the necessary resource file 
-
-i'd rather a simple file than anything too advanced at this stage 
-
-but yes, i like the "just tweak the shades for me" convention 
-
-**6:28:49 PM  Paul Jenkins**
-
-I think there is probably calls for both styles - a more flexible, but slower/more configurable app that generates it, and the auto-build-via-config. The former means you can do further tweaking/restyling, the latter is "I don't want fucking purple" 
-
-**6:29:26 PM  Brendan Forster**
-
-why not ship both, with the simple one uncommented and the complex one commented out 
-
-**6:30:28 PM  Paul Jenkins**
-
-not saying dont' do both, but it comes down to effort-reward/effort-resources (you, me, quandtm) available :P 
+HAMMER.Touch
+------
+You shouldn't touch this.
