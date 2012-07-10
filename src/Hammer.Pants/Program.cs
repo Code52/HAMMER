@@ -70,11 +70,15 @@ namespace HAMMER.Pants
         {
             HSLColor baseColour;
             PantsArgs appargs;
+            string output = "Generic.xaml";
             try
             {
                 appargs = args.As<PantsArgs>();
                 if (!string.IsNullOrEmpty(appargs.InputFile))
                     File = appargs.InputFile;
+
+                if (!string.IsNullOrEmpty(appargs.OutputFile))
+                    output = appargs.OutputFile;
 
                 baseColour = new HSLColor(appargs.Colour);
 
@@ -126,7 +130,7 @@ namespace HAMMER.Pants
                     Console.WriteLine("}}");
             }
 
-            doc.Save(@"new.xaml");
+            doc.Save(output);
 
             Console.WriteLine("Complete, press any key");
             Console.ReadKey();
