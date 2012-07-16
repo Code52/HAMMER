@@ -15,8 +15,8 @@ HAMMER.Pants solves this, by auto-modifying all the coloured brushes so you don'
 	HAMMER.Pants.exe /colour=value [/inputfile=value] [/outputfile=value]
 	
 	 /colour hex (without the #) value for the "base" - only supports RGB values currently
-	 /inputfile (optional if on Windows 8)
-	 /outputfile (optional, will default to generic.xaml in the Hammer.Pants directory)
+	 /inputfile (optional - if on Windows 8 it will look in the "Windows Kits" directory for the necessary file)
+	 /outputfile (optional - if not specified it will be named generic.xaml in the same directory as the Hammer.Pants.exe)
 
 **TODO**
 
