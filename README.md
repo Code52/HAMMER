@@ -14,15 +14,14 @@ HAMMER.Pants solves this, by auto-modifying all the coloured brushes so you don'
 	
 	HAMMER.Pants.exe /colour=value [/inputfile=value] [/outputfile=value]
 	
-	 /colour hex (without #) value for the "base" 
+	 /colour hex (without the #) value for the "base" - only supports RGB values currently
 	 /inputfile (optional if on Windows 8)
-	 /outputfile (optioanl, will default to generic.xaml in the Hammer.Pants directory)
+	 /outputfile (optional, will default to generic.xaml in the Hammer.Pants directory)
 
 **TODO**
 
 * Provide a wider colour pallete rather than auto-generated HSB values
 * Project-build script so that it's done at build time, no external app required.
-
 
 HAMMER.Touch
 ------
