@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 using MadProps.AppArgs;
 
@@ -9,10 +9,11 @@ namespace HAMMER.Pants
 {
     class Program
     {
-        //Need to check for CPU-bits
-        private static string File = @"C:\Program Files (x86)\Windows Kits\8.0\Include\winrt\xaml\design\generic.xaml";
-        private static double baseLuminosity = 95.5294132232666;
-        private static readonly Dictionary<string, Dictionary<string, double>> Brushes = new Dictionary<string, Dictionary<string, double>>
+        // NOTE: this is included when you install VS2012 - so you can run this from Windows 7
+        const string DefaultInputFile = @"\Windows Kits\8.0\Include\winrt\xaml\design\generic.xaml";
+        const double BaseLuminosity = 95.5294132232666;
+
+        static readonly Dictionary<string, Dictionary<string, double>> Brushes = new Dictionary<string, Dictionary<string, double>>
                           {
                               {"Default", new Dictionary<string, double>{
                                             {"ComboBoxItemSelectedBackgroundThemeBrush", 0},
@@ -66,73 +67,120 @@ namespace HAMMER.Pants
                                             }}
                           };
 
+        static string ProgramFilesx86()
+        {
+            if (8 == IntPtr.Size
+                || (!String.IsNullOrEmpty(Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432"))))
+            {
+                return Environment.GetEnvironmentVariable("ProgramFiles(x86)");
+            }
+
+            return Environment.GetEnvironmentVariable("ProgramFiles");
+        }
+
         static void Main(string[] args)
         {
             HSLColor baseColour;
-            PantsArgs appargs;
-            string output = "Generic.xaml";
+            PantsArgs appArgs;
+
+            string inputFile;
+            var resolvedInputFilePath = ProgramFilesx86() + DefaultInputFile;
+
+            // verify the input arguments
+            var output = "Generic.xaml";
             try
             {
-                appargs = args.As<PantsArgs>();
-                if (!string.IsNullOrEmpty(appargs.InputFile))
-                    File = appargs.InputFile;
+                appArgs = args.As<PantsArgs>();
+                inputFile = string.IsNullOrEmpty(appArgs.InputFile)
+                                        ? resolvedInputFilePath
+                                        : appArgs.InputFile ;
+                
+                if (!string.IsNullOrEmpty(appArgs.OutputFile))
+                    output = appArgs.OutputFile;
 
-                if (!string.IsNullOrEmpty(appargs.OutputFile))
-                    output = appargs.OutputFile;
-
-                baseColour = new HSLColor(appargs.Colour);
-
+                baseColour = new HSLColor(appArgs.Colour);
             }
             catch (ArgumentException ex)
             {
                 Console.WriteLine(ex.Message);
                 Console.WriteLine();
                 Console.WriteLine(AppArgs.HelpFor<PantsArgs>());
+                Console.WriteLine();
+                Console.WriteLine("Press any key to exit");
+                Console.ReadKey();
+
+                return;
+            }
+
+            // check that the input file exists
+            if (!File.Exists(inputFile))
+            {
+                Console.WriteLine("Default generic.xaml file '{0}' could not be found.", inputFile);
+                Console.WriteLine("You must specify a value for the /inputfile parameter to continue.");
+                Console.WriteLine("You can grab a version from https://raw.github.com/Code52/HAMMER/master/SampleData/generic.xaml and add it to this folder...");
+                Console.ReadKey();
 
                 return;
             }
 
             XNamespace namespace1 = "http://schemas.microsoft.com/winfx/2006/xaml/presentation";
             XNamespace namespace2 = "http://schemas.microsoft.com/winfx/2006/xaml";
-            XDocument doc = XDocument.Load(File);
-            var themeResources = (XElement)doc.Element(namespace1 + "ResourceDictionary").FirstNode;
+            var doc = XDocument.Load(inputFile);
+            var dictionary = doc.Element(namespace1 + "ResourceDictionary");
+
+            if (dictionary == null)
+            {
+                // TODO: you didn't provide a valid input file
+                return;
+            }
+
+            var themeResources = (XElement)dictionary.FirstNode;
             foreach (var x in themeResources.Elements())
             {
-                var key = x.Attribute(namespace2 + "Key").Value;
+                var brushKey = x.Attribute(namespace2 + "Key");
+                if (brushKey == null) 
+                    continue;
+
+                var key = brushKey.Value;
                 if (key == "HighContrast")
                     continue;
 
                 /* Generate dictionary code */
-                if (appargs.Generate)
-                    Console.WriteLine(string.Format("{{\"{0}\", new Dictionary<string, double>{{", key));
+                if (appArgs.Generate)
+                    Console.WriteLine("{{\"{0}\", new Dictionary<string, double>{{", key);
 
                 foreach (var brush in Brushes[key])
                 {
-                    var y = x.Elements().FirstOrDefault(i => i.Attribute(namespace2 + "Key").Value == brush.Key);
-                    if (y != null)
-                    {
-                        //y.Attribute("Color").SetValue(baseColour);
-                        
-                        /* Generate dictionary code */
-                        if (appargs.Generate)
-                        {
-                            var c = new HSLColor(y.Attribute("Color").Value.Substring(3));
-                            Console.WriteLine(string.Format("{{\"{0}\", {1}}},", brush, c.Luminosity - baseLuminosity));
-                        }
+                    var y = x.Elements().Where(i => i.Attribute(namespace2 + "Key") != null)
+                                        .FirstOrDefault(attr => attr.Value == brush.Key);
+                    if (y == null) 
+                        continue;
 
-                        var newColour = new HSLColor(baseColour.Hue, baseColour.Saturation, baseColour.Luminosity + brush.Value);
-                        y.Attribute("Color").SetValue(newColour.ToHex());
+                    /* Generate dictionary code */
+                    var attribute = y.Attribute("Color");
+                    if (attribute == null) 
+                        continue;
+
+                    if (appArgs.Generate)
+                    {
+                        var c = new HSLColor(attribute.Value.Substring(3));
+                        Console.WriteLine("{{\"{0}\", {1}}},", brush, c.Luminosity - BaseLuminosity);
                     }
+
+                    var newColour = new HSLColor(baseColour.Hue, baseColour.Saturation, baseColour.Luminosity + brush.Value);
+                    attribute.SetValue(newColour.ToHex());
                 }
 
                 /* Generate dictionary code */
-                if (appargs.Generate)
+                if (appArgs.Generate)
                     Console.WriteLine("}}");
             }
 
             doc.Save(output);
 
-            Console.WriteLine("Complete, press any key");
+            Console.WriteLine("Completed");
+            Console.WriteLine("Output file is at '{0}'", Path.GetFullPath(output));
+            Console.WriteLine("Press any key to finish");
             Console.ReadKey();
         }
     }
