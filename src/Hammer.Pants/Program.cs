@@ -12,6 +12,8 @@ namespace HAMMER.Pants
         // NOTE: this is included when you install VS2012 - so you can run this from Windows 7
         const string DefaultInputFile = @"\Windows Kits\8.0\Include\winrt\xaml\design\generic.xaml";
         const double BaseLuminosity = 95.5294132232666;
+        static readonly XNamespace XamlPresentationNamespace = "http://schemas.microsoft.com/winfx/2006/xaml/presentation";
+        static readonly XNamespace XamlRootNamespace = "http://schemas.microsoft.com/winfx/2006/xaml";
 
         static readonly Dictionary<string, Dictionary<string, double>> Brushes = new Dictionary<string, Dictionary<string, double>>
                           {
@@ -93,8 +95,8 @@ namespace HAMMER.Pants
                 appArgs = args.As<PantsArgs>();
                 inputFile = string.IsNullOrEmpty(appArgs.InputFile)
                                         ? resolvedInputFilePath
-                                        : appArgs.InputFile ;
-                
+                                        : appArgs.InputFile;
+
                 if (!string.IsNullOrEmpty(appArgs.OutputFile))
                     output = appArgs.OutputFile;
 
@@ -105,9 +107,7 @@ namespace HAMMER.Pants
                 Console.WriteLine(ex.Message);
                 Console.WriteLine();
                 Console.WriteLine(AppArgs.HelpFor<PantsArgs>());
-                Console.WriteLine();
-                Console.WriteLine("Press any key to exit");
-                Console.ReadKey();
+                WaitForInput();
 
                 return;
             }
@@ -118,27 +118,27 @@ namespace HAMMER.Pants
                 Console.WriteLine("Default generic.xaml file '{0}' could not be found.", inputFile);
                 Console.WriteLine("You must specify a value for the /inputfile parameter to continue.");
                 Console.WriteLine("You can grab a version from https://raw.github.com/Code52/HAMMER/master/SampleData/generic.xaml and add it to this folder...");
-                Console.ReadKey();
+                WaitForInput();
 
                 return;
             }
 
-            XNamespace namespace1 = "http://schemas.microsoft.com/winfx/2006/xaml/presentation";
-            XNamespace namespace2 = "http://schemas.microsoft.com/winfx/2006/xaml";
             var doc = XDocument.Load(inputFile);
-            var dictionary = doc.Element(namespace1 + "ResourceDictionary");
+            var dictionary = doc.Element(XamlPresentationNamespace + "ResourceDictionary");
 
             if (dictionary == null)
             {
-                // TODO: you didn't provide a valid input file
+                Console.WriteLine("Error: Input file '{0}' does not contain a resource dictionary", inputFile);
+                WaitForInput();
+
                 return;
             }
 
             var themeResources = (XElement)dictionary.FirstNode;
             foreach (var x in themeResources.Elements())
             {
-                var brushKey = x.Attribute(namespace2 + "Key");
-                if (brushKey == null) 
+                var brushKey = x.Attribute(XamlRootNamespace + "Key");
+                if (brushKey == null)
                     continue;
 
                 var key = brushKey.Value;
@@ -151,16 +151,17 @@ namespace HAMMER.Pants
 
                 foreach (var brush in Brushes[key])
                 {
-                    var y = x.Elements().Where(i => i.Attribute(namespace2 + "Key") != null)
+                    var y = x.Elements().Where(i => i.Attribute(XamlRootNamespace + "Key") != null)
                                         .FirstOrDefault(attr => attr.Value == brush.Key);
-                    if (y == null) 
+                    if (y == null)
+                        continue;
+
+                    
+                    var attribute = y.Attribute("Color");
+                    if (attribute == null)
                         continue;
 
                     /* Generate dictionary code */
-                    var attribute = y.Attribute("Color");
-                    if (attribute == null) 
-                        continue;
-
                     if (appArgs.Generate)
                     {
                         var c = new HSLColor(attribute.Value.Substring(3));
@@ -181,7 +182,16 @@ namespace HAMMER.Pants
             Console.WriteLine("Completed");
             Console.WriteLine("Output file is at '{0}'", Path.GetFullPath(output));
             Console.WriteLine("Press any key to finish");
+            WaitForInput();
+        }
+
+        private static void WaitForInput()
+        {
+#if DEBUG
+            Console.WriteLine();
+            Console.WriteLine("Press any key to exit");
             Console.ReadKey();
+#endif
         }
     }
 }
