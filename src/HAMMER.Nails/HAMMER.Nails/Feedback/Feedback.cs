@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Windows.UI;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Media;
 
 namespace HAMMER.Nails
 {
@@ -16,7 +19,8 @@ namespace HAMMER.Nails
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch,
                 Width = Window.Current.Bounds.Width,
-                Height = Window.Current.Bounds.Height
+                Height = Window.Current.Bounds.Height,
+                
             };
 
             var f = new FeedbackView
@@ -31,7 +35,15 @@ namespace HAMMER.Nails
                                               p.IsOpen = false;
                                           }
                         };
-            p.Child = f;
+            var g = new Grid
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Stretch,
+                Width = Window.Current.Bounds.Width,
+                Height = Window.Current.Bounds.Height,
+            };
+            g.Children.Add(f);
+            p.Child = g;
             p.IsOpen = true;
             await tcs.Task;
             return result;
