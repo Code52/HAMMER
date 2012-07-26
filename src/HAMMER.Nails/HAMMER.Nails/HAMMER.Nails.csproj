@@ -100,11 +100,20 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Page Include="Feedback\FeedbackView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\EncodingExtensions.cs" />
     <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="Feedback\Feedback.cs" />
+    <Compile Include="Feedback\FeedbackOption.cs" />
+    <Compile Include="Feedback\FeedbackResult.cs" />
+    <Compile Include="Feedback\FeedbackStatus.cs" />
+    <Compile Include="Feedback\FeedbackView.xaml.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
