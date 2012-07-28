@@ -151,12 +151,10 @@ namespace HAMMER.Pants
 
                 foreach (var brush in Brushes[key])
                 {
-                    var y = x.Elements().Where(i => i.Attribute(XamlRootNamespace + "Key") != null)
-                                        .FirstOrDefault(attr => attr.Value == brush.Key);
+                    var y = x.Elements().FirstOrDefault(i => i.Attribute(XamlRootNamespace + "Key").Value == brush.Key);
                     if (y == null)
                         continue;
 
-                    
                     var attribute = y.Attribute("Color");
                     if (attribute == null)
                         continue;
