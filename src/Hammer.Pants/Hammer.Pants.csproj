@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HSLColor.cs" />
+    <Compile Include="InputProcessor.cs" />
     <Compile Include="MadProps\AppArgs.cs" />
     <Compile Include="PantsArgs.cs" />
     <Compile Include="PantsWithConfigArgs.cs" />

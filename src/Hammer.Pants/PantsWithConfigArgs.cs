@@ -15,7 +15,6 @@ namespace HAMMER.Pants
             Exception = exception;
         }
 
-        [Required]
         public string ConfigFile { get; set; }
 
         public Exception Exception { get; private set; }
