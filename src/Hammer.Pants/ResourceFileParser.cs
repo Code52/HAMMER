@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace HAMMER.Pants.Tests
+namespace HAMMER.Pants
 {
     public class ResourceFileParser
     {
@@ -63,8 +62,6 @@ namespace HAMMER.Pants.Tests
                                             {"ToggleSwitchCurtainPressedBackgroundThemeBrush", 42.3529386520386},
                                             }}
                           };
-
-
 
         private readonly XDocument _document;
 

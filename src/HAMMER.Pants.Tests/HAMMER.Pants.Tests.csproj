@@ -48,7 +48,6 @@
   <ItemGroup>
     <Compile Include="ParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResourceFileParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

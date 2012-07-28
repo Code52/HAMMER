@@ -21,7 +21,8 @@ namespace HAMMER.Pants.Tests
 
             // assert
             var themeResources = output.Descendants()
-                .Where(c => c.Name.LocalName == "SolidColorBrush");
+                .Where(c => c.Name.LocalName == "SolidColorBrush")
+                .ToList();
 
             if (!themeResources.Any())
                 throw new AssertFailedException("No theme resources found");
