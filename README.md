@@ -23,6 +23,15 @@ HAMMER.Pants solves this, by auto-modifying all the coloured brushes so you don'
 * Provide a wider colour pallete rather than auto-generated HSB values
 * Project-build script so that it's done at build time, no external app required.
 
+HAMMER.Nails
+------------
+**Feedback** provides a simple, standard way to present a feedback form. It's up to you to provide the processing to send to your backend.
+Usage:  
+``FeedbackResult x = await HAMMER.Nails.Feedback.ShowFeedback();``
+
+Example:  
+![](http://i.imgur.com/LaTm0.png)
+
 HAMMER.Touch
 ------
 You shouldn't touch this.
