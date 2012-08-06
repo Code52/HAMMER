@@ -57,7 +57,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Hammer.Pants\HAMMER.Pants.csproj">
+    <ProjectReference Include="..\Logic\Logic.csproj">
       <Project>{1B5A2D4B-0B5B-48C6-B8EE-DF31908B96F9}</Project>
       <Name>HAMMER.Pants</Name>
     </ProjectReference>

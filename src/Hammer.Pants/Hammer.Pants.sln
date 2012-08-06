@@ -1,17 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HAMMER.Pants", "HAMMER.Pants.csproj", "{1B5A2D4B-0B5B-48C6-B8EE-DF31908B96F9}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{864278FA-4C8E-4EDF-8276-7766A7B579A3}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HAMMER.Pants.Tests", "..\HAMMER.Pants.Tests\HAMMER.Pants.Tests.csproj", "{66FBB215-1F0E-4EBF-A722-4C3F0C084189}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic", "Logic\Logic.csproj", "{1B5A2D4B-0B5B-48C6-B8EE-DF31908B96F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HAMMER.Pants.NuGet", "..\Hammer.Pants.NuGet\HAMMER.Pants.NuGet.csproj", "{A81BDEC0-911A-4B97-8C2D-65D8E2510B08}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{66FBB215-1F0E-4EBF-A722-4C3F0C084189}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGet", "NuGet\NuGet.csproj", "{A81BDEC0-911A-4B97-8C2D-65D8E2510B08}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
