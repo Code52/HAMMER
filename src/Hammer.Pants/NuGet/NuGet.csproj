@@ -42,19 +42,24 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="hammer.config" />
+    <None Include="Content\hammer.config" />
+    <None Include="HAMMER.Pants.nuspec" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Themes\win8-default.xaml">
+    <Content Include="Content\Themes\win8-default.xaml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Tools\HAMMER.Pants.exe" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
   <Target Name="AfterBuild">
+    <ItemGroup>
+       <GeneratedBinaries Include="$(ProjectDir)\**\*.dll" />
+    </ItemGroup>
+
+    <Delete Files="@(GeneratedBinaries)" />
+
+    <!-- create the package -->
+    <Exec Command="$(SolutionDir).nuget\nuget.exe pack $(ProjectDir)HAMMER.Pants.nuspec -BasePath $(ProjectDir) -OutputDirectory $(SolutionDir)..\..\" />
   </Target>
-  -->
 </Project>
