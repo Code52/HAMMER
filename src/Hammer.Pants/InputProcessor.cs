@@ -41,7 +41,7 @@ namespace HAMMER.Pants
                 }
                 return appArgs;
             }
-            catch (ArgumentException ex)
+            catch (Exception ex)
             {
                 return new PantsArgs(ex);
             }
@@ -63,14 +63,13 @@ namespace HAMMER.Pants
                 }
 
                 var file = XDocument.Load(configArgs.ConfigFile);
-
-                
-                var settings = file.Descendants("appSettings");
+                var settings = file.Descendants("appSettings").Descendants("add");
 
                 var appArgs = new PantsArgs
                 {
                     Colour = GetNodeByKey(settings, "colour"),
-                    InputFile = GetNodeByKey(settings, "input-file")
+                    InputFile = GetNodeByKey(settings, "input-file"),
+                    OutputFile = GetNodeByKey(settings, "output-file")
                 };
 
                 if (string.IsNullOrEmpty(appArgs.InputFile))
@@ -81,6 +80,10 @@ namespace HAMMER.Pants
                 {
                     appArgs.OutputFile = appArgs.InputFile;
                 }
+
+                Console.WriteLine("Input File: {0}", appArgs.InputFile);
+                Console.WriteLine("Output File: {0}", appArgs.OutputFile);
+
                 return appArgs;
             }
             catch (Exception ex)
@@ -91,8 +94,9 @@ namespace HAMMER.Pants
 
         static string GetNodeByKey(IEnumerable<XElement> settings, string key)
         {
-            return settings.Descendants().FirstOrDefault(x => x.Attribute("key").Value == key)
-                .Attribute("value").Value;
+            var node = settings.FirstOrDefault(x => x.Attribute("key").Value == key);
+            if (node == null) return string.Empty;
+            return node.Attribute("value").Value;
         }
     }
 }

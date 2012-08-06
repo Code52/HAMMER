@@ -57,11 +57,6 @@
     <Compile Include="ResourceFileParser.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\SampleData\generic.xaml">
-      <Link>generic.xaml</Link>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

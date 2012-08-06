@@ -19,6 +19,10 @@ namespace HAMMER.Pants
                 Console.WriteLine(argsWithColourSpecified.Exception.Message);
                 Console.WriteLine();
                 Console.WriteLine(AppArgs.HelpFor<PantsArgs>());
+
+                Console.WriteLine(argsWithAppSpecified.Exception.Message);
+                Console.WriteLine();
+                Console.WriteLine(AppArgs.HelpFor<PantsWithConfigArgs>());
                 WaitForInput();
                 return;
             }
@@ -29,7 +33,7 @@ namespace HAMMER.Pants
             }
             else if (argsWithAppSpecified.Exception == null)
             {
-                 Process(argsWithColourSpecified.InputFile, argsWithColourSpecified.Colour, argsWithColourSpecified.OutputFile);
+                Process(argsWithAppSpecified.InputFile, argsWithAppSpecified.Colour, argsWithAppSpecified.OutputFile);
             }
             
             WaitForInput();
@@ -37,9 +41,13 @@ namespace HAMMER.Pants
 
         private static void Process(string inputFile, string baseColourHex, string outputFile)
         {
-            if (!File.Exists(inputFile))
+            var directory = Directory.GetCurrentDirectory();
+            Console.WriteLine("Working from directory '{0}'", directory);
+            var path = Path.GetFullPath(inputFile);
+
+            if (!File.Exists(path))
             {
-                Console.WriteLine("Default generic.xaml file '{0}' could not be found.", inputFile);
+                Console.WriteLine("Input resource file '{0}' could not be found.", path);
                 Console.WriteLine("You must specify a value for the /inputfile parameter to continue.");
                 Console.WriteLine("You can grab a version from https://raw.github.com/Code52/HAMMER/master/SampleData/generic.xaml and add it to this folder...");
                 return;
