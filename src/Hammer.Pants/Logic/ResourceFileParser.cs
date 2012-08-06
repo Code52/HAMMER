@@ -1,19 +1,13 @@
-﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using MadProps.AppArgs;
 
 namespace HAMMER.Pants
 {
-    class Program
+    public class ResourceFileParser
     {
-        // NOTE: this is included when you install VS2012 - so you can run this from Windows 7
-        const string DefaultInputFile = @"\Windows Kits\8.0\Include\winrt\xaml\design\generic.xaml";
-        const double BaseLuminosity = 95.5294132232666;
-        static readonly XNamespace XamlPresentationNamespace = "http://schemas.microsoft.com/winfx/2006/xaml/presentation";
-        static readonly XNamespace XamlRootNamespace = "http://schemas.microsoft.com/winfx/2006/xaml";
+        public static readonly XNamespace XamlPresentationNamespace = "http://schemas.microsoft.com/winfx/2006/xaml/presentation";
+        public static readonly XNamespace XamlRootNamespace = "http://schemas.microsoft.com/winfx/2006/xaml";
 
         static readonly Dictionary<string, Dictionary<string, double>> Brushes = new Dictionary<string, Dictionary<string, double>>
                           {
@@ -69,70 +63,19 @@ namespace HAMMER.Pants
                                             }}
                           };
 
-        static string ProgramFilesx86()
-        {
-            if (8 == IntPtr.Size
-                || (!String.IsNullOrEmpty(Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432"))))
-            {
-                return Environment.GetEnvironmentVariable("ProgramFiles(x86)");
-            }
+        private readonly XDocument _document;
 
-            return Environment.GetEnvironmentVariable("ProgramFiles");
+        public ResourceFileParser(XDocument document)
+        {
+            _document = document;
         }
 
-        static void Main(string[] args)
+        public XDocument Update(string baseColourHex)
         {
-            HSLColor baseColour;
-            PantsArgs appArgs;
+            var output = new XDocument(_document);
 
-            string inputFile;
-            var resolvedInputFilePath = ProgramFilesx86() + DefaultInputFile;
-
-            // verify the input arguments
-            var output = "Generic.xaml";
-            try
-            {
-                appArgs = args.As<PantsArgs>();
-                inputFile = string.IsNullOrEmpty(appArgs.InputFile)
-                                        ? resolvedInputFilePath
-                                        : appArgs.InputFile;
-
-                if (!string.IsNullOrEmpty(appArgs.OutputFile))
-                    output = appArgs.OutputFile;
-
-                baseColour = new HSLColor(appArgs.Colour);
-            }
-            catch (ArgumentException ex)
-            {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine();
-                Console.WriteLine(AppArgs.HelpFor<PantsArgs>());
-                WaitForInput();
-
-                return;
-            }
-
-            // check that the input file exists
-            if (!File.Exists(inputFile))
-            {
-                Console.WriteLine("Default generic.xaml file '{0}' could not be found.", inputFile);
-                Console.WriteLine("You must specify a value for the /inputfile parameter to continue.");
-                Console.WriteLine("You can grab a version from https://raw.github.com/Code52/HAMMER/master/SampleData/generic.xaml and add it to this folder...");
-                WaitForInput();
-
-                return;
-            }
-
-            var doc = XDocument.Load(inputFile);
-            var dictionary = doc.Element(XamlPresentationNamespace + "ResourceDictionary");
-
-            if (dictionary == null)
-            {
-                Console.WriteLine("Error: Input file '{0}' does not contain a resource dictionary", inputFile);
-                WaitForInput();
-
-                return;
-            }
+            var baseColour = new HSLColor(baseColourHex);
+            var dictionary = output.Element(XamlPresentationNamespace + "ResourceDictionary");
 
             var themeResources = (XElement)dictionary.FirstNode;
             foreach (var x in themeResources.Elements())
@@ -145,10 +88,6 @@ namespace HAMMER.Pants
                 if (key == "HighContrast")
                     continue;
 
-                /* Generate dictionary code */
-                if (appArgs.Generate)
-                    Console.WriteLine("{{\"{0}\", new Dictionary<string, double>{{", key);
-
                 foreach (var brush in Brushes[key])
                 {
                     var y = x.Elements().FirstOrDefault(i => i.Attribute(XamlRootNamespace + "Key").Value == brush.Key);
@@ -159,37 +98,12 @@ namespace HAMMER.Pants
                     if (attribute == null)
                         continue;
 
-                    /* Generate dictionary code */
-                    if (appArgs.Generate)
-                    {
-                        var c = new HSLColor(attribute.Value.Substring(3));
-                        Console.WriteLine("{{\"{0}\", {1}}},", brush, c.Luminosity - BaseLuminosity);
-                    }
-
                     var newColour = new HSLColor(baseColour.Hue, baseColour.Saturation, baseColour.Luminosity + brush.Value);
                     attribute.SetValue(newColour.ToHex());
                 }
-
-                /* Generate dictionary code */
-                if (appArgs.Generate)
-                    Console.WriteLine("}}");
             }
 
-            doc.Save(output);
-
-            Console.WriteLine("Completed");
-            Console.WriteLine("Output file is at '{0}'", Path.GetFullPath(output));
-            Console.WriteLine("Press any key to finish");
-            WaitForInput();
-        }
-
-        private static void WaitForInput()
-        {
-#if DEBUG
-            Console.WriteLine();
-            Console.WriteLine("Press any key to exit");
-            Console.ReadKey();
-#endif
+            return output;
         }
     }
 }
