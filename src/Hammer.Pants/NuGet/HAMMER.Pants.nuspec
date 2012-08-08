@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>HAMMER.Pants</id>
+    <version>0.1</version>
+    <authors>Paul Jenkins, Brendan Forster</authors>
+    <owners>Paul Jenkins, Brendan Forster</owners>
+    <licenseUrl>http://opensource.org/licenses/ms-pl/</licenseUrl>
+    <projectUrl>https://github.com/Code52/HAMMER</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Generate XAML Resources for your Win8 app from a base colour</description>
+    <tags>Win8 XAML Styling</tags>
+  </metadata>
+</package>
