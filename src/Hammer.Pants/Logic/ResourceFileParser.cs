@@ -72,6 +72,10 @@ namespace HAMMER.Pants
 
         public XDocument Update(string baseColourHex)
         {
+            baseColourHex = baseColourHex.Trim('#');
+            if (baseColourHex.Length == 8)
+                baseColourHex = baseColourHex.Substring(2);
+
             var output = new XDocument(_document);
 
             var baseColour = new HSLColor(baseColourHex);
