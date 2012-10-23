@@ -102,8 +102,9 @@ namespace HAMMER.Pants
                     if (attribute == null)
                         continue;
 
+                    
                     var newColour = new HSLColor(baseColour.Hue, baseColour.Saturation, baseColour.Luminosity + brush.Value);
-                    attribute.SetValue(newColour.ToHex());
+                    attribute.SetValue(attribute.Value.Substring(0, 3) + newColour.ToHex());
                 }
             }
 
